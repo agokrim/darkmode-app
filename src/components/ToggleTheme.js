@@ -1,33 +1,40 @@
-import React, { Component, useState, useContext } from 'react';
+import React, { Component } from 'react';
 import sun from '../assets/sun.svg';
 import moon from '../assets/moon.svg';
 import { ThemeContext } from '../contexts/ThemeContext';
 
-const ToggleTheme = () => {
-	const { toggleTheme } = useContext(ThemeContext);
-	const [icon, setIcon] = useState(true);
+class ToggleTheme extends Component {
 
-	const iconChange = () => {
-		let newIcon = !icon;
-		setIcon(newIcon);
+	state = {
+		icon: false
 	}
 
-	return (
-		<div className="toggle__box">
-			<span>
-			{icon ? (
-				<img src={moon} className="moon-icon" />
-			) : (
-				<img src={sun} className="sun-icon" />
-			)}
-			</span>
-			<div className="toggle__btn" onClick={toggleTheme}>
-				<input type="checkbox" className="checkbox" onChange={iconChange}  />
-				<div className="circle"></div>
-				<div className="layer"></div>
-			</div>
- 		</div>
-	)
+	iconChange = () => {
+		this.setState({ icon: !this.state.icon });
+	}
+
+	render() {
+		return (
+			<ThemeContext.Consumer>{(context) => {
+				return (
+					<div className="toggle__box">
+						<span>
+						{this.state.icon ? (
+							<img src={moon} className="moon-icon" />
+						) : (
+							<img src={sun} className="sun-icon" />
+						)}
+						</span>
+						<div className="toggle__btn" onClick={context.toggleTheme}>
+							<input type="checkbox" className="checkbox" onChange={this.iconChange}  />
+							<div className="circle"></div>
+							<div className="layer"></div>
+						</div>
+					</div>
+				)
+			}}</ThemeContext.Consumer>
+		)
+	}
 }
 
 export default ToggleTheme;
